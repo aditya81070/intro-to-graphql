@@ -11,18 +11,21 @@ const types = ['product', 'coupon', 'user']
 
 export const start = async () => {
   const rootSchema = `
-    type Cat {
-      name: String!
-      age: Int
-      owner: Owner!
+    interface Animal {
+      species: String!
     }
-    type Owner {
-      name: String!
-      cat: Cat!
+
+    type Tiger implements Animal {
+      species: String!
+      stripsCount: Int!
+    }
+
+    type Lion implements Animal {
+      species: String!
+      mainColor: String!
     }
     type Query {
-      cat: Cat!
-      owner: Owner!
+      animals: [Animal]!
     }
     schema {
       query: Query
@@ -34,37 +37,16 @@ export const start = async () => {
     typeDefs: [rootSchema],
     resolvers: {
       Query: {
-        cat(_, args) {
-          console.log('in query cat')
-          return {}
-        },
-        owner(_, args) {
-          console.log('in query owner')
-          return {}
+        animals() {
+          return [
+            { species: 'Tiger', stripsCount: 4 },
+            { species: 'Lion', mainColor: 'yellow' }
+          ]
         }
       },
-      Cat: {
-        name() {
-          console.log('in cat name')
-          return 'Daryl'
-        },
-        age() {
-          console.log('in cat age')
-          return 2
-        },
-        owner() {
-          console.log('in cat owner')
-          return {}
-        }
-      },
-      Owner: {
-        name() {
-          console.log('in owner name')
-          return 'Scott'
-        },
-        cat() {
-          console.log('in owner cat')
-          return {}
+      Animal: {
+        __resolveType(animal) {
+          return animal.species
         }
       }
     },
