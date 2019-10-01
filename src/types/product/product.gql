@@ -44,14 +44,13 @@ input UpdateProductInput {
   range: String
 }
 
-
-extend type Query {
-  products: [Product]!
-  product(id: ID!): Product!
-}
-
 extend type Mutation {
   newProduct(input: NewProductInput!): Product!
   updateProduct(id: ID!, input: UpdateProductInput!): Product!
   removeProduct(id: ID!): Product!
+}
+
+extend type Query {
+  product(id: ID!): Product!
+  products: [Product!]!
 }
