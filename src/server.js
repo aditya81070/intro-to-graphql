@@ -12,22 +12,17 @@ const types = ['product', 'coupon', 'user']
 export const start = async () => {
   const rootSchema = `
     type Cat {
-      name: String
-      age : Int!
-      bestFriend: Cat!
+      name: String!
+      age: Int
+      owner: Owner!
     }
-
-    input catInput {
-      name: String
-      age: Int!
-      bestFriend: catInput!
+    type Owner {
+      name: String!
+      cat: Cat!
     }
     type Query {
-      myCat: Cat
-      hello: String
-    }
-    type Mutation {
-      newCat(input: catInput): Cat!
+      cat: Cat!
+      owner: Owner!
     }
     schema {
       query: Query
@@ -39,19 +34,37 @@ export const start = async () => {
     typeDefs: [rootSchema],
     resolvers: {
       Query: {
-        myCat() {
-          return {
-            name: 'Garfield',
-            age: 24,
-            bestFriend: {
-              name: 'Lora',
-              age: 23,
-              bestFriend: {}
-            }
-          }
+        cat(_, args) {
+          console.log('in query cat')
+          return {}
         },
-        hello() {
-          return 'hello'
+        owner(_, args) {
+          console.log('in query owner')
+          return {}
+        }
+      },
+      Cat: {
+        name() {
+          console.log('in cat name')
+          return 'Daryl'
+        },
+        age() {
+          console.log('in cat age')
+          return 2
+        },
+        owner() {
+          console.log('in cat owner')
+          return {}
+        }
+      },
+      Owner: {
+        name() {
+          console.log('in owner name')
+          return 'Scott'
+        },
+        cat() {
+          console.log('in owner cat')
+          return {}
         }
       }
     },
